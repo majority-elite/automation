@@ -1,0 +1,29 @@
+name: TIL-Penalty
+
+on:
+  schedule:
+    - cron: '0 20 * * *'
+jobs:
+  add-penalty:
+    name: Add Penalty on Notion
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.1.4
+
+      - name: 📦 Install dependencies
+        run: bun install
+
+      - name: Add penalty on Notion
+        run: bun ./til-study/penalty.ts
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          TIL_STUDY_DATABASE_ID: ${{ secrets.TIL_STUDY_DATABASE_ID }}
+          TIL_STUDY_PARTICIPANTS_BLOCK_ID: ${{ secrets.TIL_STUDY_PARTICIPANTS_BLOCK_ID }}
+          TIL_STUDY_PENALTY_DATABASE_ID: ${{ secrets.TIL_STUDY_PENALTY_DATABASE_ID }}
+          TIL_STUDY_PENALTY_AMOUNT: ${{ secrets.TIL_STUDY_PENALTY_AMOUNT }}
